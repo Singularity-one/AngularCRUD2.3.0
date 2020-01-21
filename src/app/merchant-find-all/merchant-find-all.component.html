@@ -1,0 +1,93 @@
+<p>
+  merchant-find-all works!   
+</p>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h2>Merchant List</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>  
+          <th>No</th>
+          <th>merchantId</th>
+          <th>name</th>
+          <th>addr</th>
+          <th>tel</th>
+          <th>pic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let merchants of merchants ; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{merchants.merchantId}}</td>
+          <td>{{merchants.name}}</td>
+          <td>{{merchants.addr}}</td>
+          <td>{{merchants.tel}}</td>
+          <td>
+            <!-- 如果字串長度小於30代表只有unsafe:data:image/jpeg;base64, -->
+            <div *ngIf="merchants.pic.length<30; else anotherWord">
+              <div class="form-group">
+                <label for="name">Pic</label>
+                <input type="text" class="form-control" 
+                name="pic" type="file" (change)="upload($event)">
+              <button (click)="updateMerchants(merchants.merchantId,merchants.name,merchants.addr,merchants.tel)" class="btn btn-info" style="margin-left: 10px" >送出</button>
+              </div>
+            </div>
+            <ng-template #anotherWord>
+            <img [src]="'data:image/jpeg;base64,' + merchants.pic" style="display: inline-block; width: 30%;"/>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<h4>Image:</h4>
+<img src="{{image}}" alt="">
+<!-- <img [src]="user_photo">看解碼是否正確 -->
+
+<h3>Create Merchant</h3>
+<div style="width: 400px;">
+  <form novalidate (ngSubmit)="onSubmit(newMerchant)">
+    <div class="form-group">
+      <label for="name">Name(WILLIE)</label>
+      <input type="text" class="form-control" 
+      name="name"              
+      [(ngModel)]="newMerchant.name" 
+      #name="ngModel"
+      required 
+      minlength="2">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Addr(地球)</label>
+      <input type="text" class="form-control" 
+      name="addr"              
+      [(ngModel)]="newMerchant.addr" 
+      #addr="ngModel"
+      required 
+      minlength="2">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Tel(XXXX)</label>
+      <input type="text" class="form-control" 
+      name="tel"              
+      [(ngModel)]="newMerchant.tel" 
+      #tel="ngModel"
+      required 
+      minlength="2">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Pic</label>
+      <input type="text" class="form-control" 
+      name="pic" type="file" (change)="upload($event)">
+    </div>
+    Data:{{jsonMerchant}}
+    <button type="submit" class="btn btn-success">送出</button>
+  </form>
+</div>
+
